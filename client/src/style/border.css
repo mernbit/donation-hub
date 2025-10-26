@@ -1,0 +1,15 @@
+.border-brand {
+@apply border-[#007BFF] border-1 
+}
+.border-primary {
+@apply !border-[#FFC107] !border-1 
+}
+.border-section {
+@apply border-[#F8F9FA] border-1    
+}
+.border-foot {
+@apply border-[#212529] border-1    
+}
+.border-success {
+@apply border-[#28A745] !border-1    
+}

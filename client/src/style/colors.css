@@ -1,0 +1,63 @@
+.bg-brand {
+  @apply !bg-[#007BFF];
+}
+
+.bg-primary {
+  @apply !bg-[#FFC107];
+}
+
+.bg-section {
+  @apply !bg-[#F8F9FA];
+}
+
+.bg-foot {
+  @apply !bg-[#212529];
+}
+
+.bg-success {
+  @apply !bg-[#28A745];
+}
+
+.bg-danger {
+  @apply !bg-[#DC3545];
+}
+
+.bg-secondary {
+  @apply !bg-[#FF9013];
+}
+
+.bg-light {
+  @apply !bg-[#F5F1DC];
+}
+
+.text-brand {
+  @apply !text-[#007BFF];
+}
+
+.text-primary {
+  @apply !text-[#FFC107];
+}
+
+.text-section {
+  @apply !text-[#F8F9FA];
+}
+
+.text-foot {
+  @apply !text-[#212529];
+}
+
+.text-success {
+  @apply !text-[#28A745];
+}
+
+.text-danger {
+  @apply !text-[#DC3545];
+}
+
+.text-secondary {
+  @apply !text-[#FF9013];
+}
+
+.bg-light {
+  @apply !bg-[#F5F1DC];
+}

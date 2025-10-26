@@ -1,0 +1,6 @@
+.transition-300 {
+  @apply !transition-all !duration-300;
+}
+.transition-150 {
+  @apply !transition-all !duration-150;
+}

@@ -1,0 +1,23 @@
+.nav-link {
+  @apply cursor-pointer p-3 font-semibold text-white/80 hover:text-white;
+}
+
+.btn-brand {
+  @apply cursor-pointer bg-[#007BFF] text-white px-5 py-2 rounded hover:brightness-90;
+}
+
+.btn-primary {
+  @apply cursor-pointer bg-[#FFC107] text-white px-5 py-2 rounded hover:brightness-90;
+}
+
+.btn-secondary {
+  @apply cursor-pointer bg-[#FF9013] text-white px-5 py-2 rounded hover:brightness-90;
+}
+
+.btn-danger {
+  @apply cursor-pointer bg-[#DC3545] text-white px-5 py-2 rounded hover:brightness-90;
+}
+
+.btn-success {
+  @apply cursor-pointer bg-[#28A745] text-white px-5 py-2 rounded hover:brightness-90;
+}

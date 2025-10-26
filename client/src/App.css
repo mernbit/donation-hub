@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "./style/colors.css";
+@import "./style/transitions.css";
+@import "./style/buttons.css";
+@import "./style/field.css";
+@import "./style/sider.css";
