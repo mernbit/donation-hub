@@ -6,7 +6,7 @@ import DonationOvertime from './sub components/DonationOvertime'
 const Dashboard = () => {
   document.title = "Dashboard"
   return (
-    <div className='max-w-[80%] mx-auto'>
+    <div className='md:max-w-[80%] max-w-[95%] mx-auto'>
       <Row gutter={[16,16]}>
         <Col lg={10} md={12} xs={24} sm={24}>
           <DashboardOverview />
