@@ -51,7 +51,7 @@ const Sider = () => {
 
   return (
     <div
-      className={`sider transition-150 bg-secondary ${
+      className={`sider transition-150 bg-primary ${
         !isOpen ? "w-0" : "w-[350px] p-3"
       }`}
     >
@@ -67,14 +67,14 @@ const Sider = () => {
           <MenuOutlined />
         </div>
         <h1 className="text-2xl text-center">
-          <HeartFilled className="bg-primary p-3 rounded-full" /> Donation Hub
+          <HeartFilled className="bg-secondary text-primary p-3 rounded-full" /> Donation Hub
         </h1>
       </div>
       <hr className="my-4" />
       <div className={`${!isOpen ? "hidden" : "block"}`}>
         {links.map((link) => (
           <Link key={link.label} to={link.to}>
-            <div className={`p-3 hover:bg-white hover:text-black ${location.pathname === link.to && "!bg-white !text-black"} rounded transition-150 border-primary my-2 flex items-center`}>
+            <div className={`p-3 hover:bg-secondary hover:text-black ${location.pathname === link.to && "bg-secondary !text-black"} rounded transition-150 border-primary my-2 flex items-center`}>
               <link.icons />
               <span className="ml-2">{link.label}</span>
             </div>

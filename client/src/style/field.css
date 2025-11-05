@@ -1,6 +1,21 @@
 .auth-field {
-  @apply border-b outline-0 p-3 w-full focus:bg-blue-100;
+  @apply border-b outline-0 p-3 w-full focus:bg-blue-100 placeholder:select-none transition-all duration-150;
 }
 .auth-field:focus {
-  @apply border-b-[#007BFF] outline-0 p-3 w-full focus:bg-blue-100;
+  @apply border-b-[#007BFF] placeholder:text-[#007BFF]/85 outline-0 p-3 w-full focus:bg-blue-100;
+}
+
+.input-field {
+  @apply py-1 px-3 w-full rounded-lg outline-none border border-gray-300;
+}
+
+.ql-container {
+  min-height: 200px;
+  height: 200px; /* fixed height */
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.ql-editor {
+  min-height: 200px;
 }

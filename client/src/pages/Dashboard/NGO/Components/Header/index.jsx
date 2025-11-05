@@ -6,7 +6,7 @@ const Header = () => {
   const { setIsOpen, isOpen } = useTabContext();
   const { user } = useAuthContext();
   return (
-    <div className="bg-secondary py-3">
+    <div className="bg-primary py-3">
       <div className="w-[80%] font-bold text-white mx-auto flex justify-between items-center">
         <div className="text-2xl" onClick={() => setIsOpen(!isOpen)}>
           <MenuOutlined />

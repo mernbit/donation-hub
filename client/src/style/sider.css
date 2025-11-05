@@ -2,5 +2,5 @@
   @apply min-h-screen fixed left-0 top-0 z-50 text-white font-bold text-xl;
 }
 .bg-secondary-2{
-  @apply !bg-[#FF9013]/80;
+  @apply !bg-[#FEC5F6]/80;
 }

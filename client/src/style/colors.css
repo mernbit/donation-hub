@@ -1,13 +1,13 @@
 .bg-brand {
-  @apply !bg-[#007BFF];
+  @apply !bg-[#1230AE];
 }
 
 .bg-primary {
-  @apply !bg-[#FFC107];
+  @apply !bg-[#6C48C5];
 }
 
 .bg-section {
-  @apply !bg-[#F8F9FA];
+  @apply !bg-[#FFF7F7];
 }
 
 .bg-foot {
@@ -23,7 +23,7 @@
 }
 
 .bg-secondary {
-  @apply !bg-[#FF9013];
+  @apply !bg-[#FEC5F6];
 }
 
 .bg-light {
@@ -31,15 +31,15 @@
 }
 
 .text-brand {
-  @apply !text-[#007BFF];
+  @apply !text-[#1230AE];
 }
 
 .text-primary {
-  @apply !text-[#FFC107];
+  @apply !text-[#6C48C5];
 }
 
 .text-section {
-  @apply !text-[#F8F9FA];
+  @apply !text-[#FFF7F7];
 }
 
 .text-foot {
@@ -55,9 +55,15 @@
 }
 
 .text-secondary {
-  @apply !text-[#FF9013];
+  @apply !text-[#FEC5F6];
 }
 
 .bg-light {
   @apply !bg-[#F5F1DC];
 }
+
+.hover-bg-secondary {
+  @apply hover:bg-[#FEC5F6];
+}
+
+/*C68FE6*/

@@ -3,15 +3,16 @@
 }
 
 .btn-brand {
-  @apply cursor-pointer bg-[#007BFF] text-white px-5 py-2 rounded hover:brightness-90;
+  @apply cursor-pointer bg-[#1230AE] text-white px-5 py-2 rounded hover:brightness-90;
 }
 
+
 .btn-primary {
-  @apply cursor-pointer bg-[#FFC107] text-white px-5 py-2 rounded hover:brightness-90;
+  @apply cursor-pointer bg-[#6C48C5] text-white px-5 py-2 rounded hover:brightness-90;
 }
 
 .btn-secondary {
-  @apply cursor-pointer bg-[#FF9013] text-white px-5 py-2 rounded hover:brightness-90;
+  @apply cursor-pointer bg-[#FEC5F6] text-black px-5 py-2 rounded hover:brightness-90;
 }
 
 .btn-danger {

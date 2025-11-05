@@ -6,7 +6,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { isAuth, handleLogout } = useAuthContext();
   return (
-    <header className="p-3 bg-brand">
+    <header className="p-3 bg-primary">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#" className="text-2xl font-bold text-white select-none">
           Donation Hub
@@ -61,7 +61,7 @@ const Navbar = () => {
           open ? "max-h-96" : "max-h-0"
         }`}
       >
-        <div className="mt-2 rounded-lg bg-brand/95 backdrop-blur-[2px] border border-white/10">
+        <div className="mt-2 rounded-lg bg-primary backdrop-blur-[2px] border border-white/10">
           <nav className="flex flex-col">
             <a
               className="text-white px-4 py-3 hover:bg-white/10 transition-150"
