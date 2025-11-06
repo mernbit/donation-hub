@@ -1,11 +1,15 @@
 const Campaign = require("../../models/campaign/campaign.model");
-
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const fs = require("fs");
+const { upload: cloudinaryUpload } = require("../../utils/cloudinary/cloudinary");
 const createController = async (req, res) => {
   try {
     const { title, goalAmount, category, endDate, image, description } =
       req.body;
     const campaign = new Campaign({
       title,
+      raisedAmount: 0,
       goalAmount,
       category,
       endDate,

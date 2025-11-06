@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { PlusOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const initalState = {
   title: "",
@@ -20,7 +21,7 @@ const AddCampaign = () => {
     setState((s) => ({ ...s, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let { title, goalAmount, category, endDate, image, description } = state;
 
@@ -49,6 +50,10 @@ const AddCampaign = () => {
       image: images,
       description,
     };
+    await axios.post(
+      `${process.env.REACT_APP_API_URL}/campaign/create`,
+      formData
+    );
   };
 
   return (
