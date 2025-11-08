@@ -1,8 +1,8 @@
-import { Button, Col, Form, Row, Select, Upload } from "antd";
+import { Button, Col, Form, message, Row, Select, Upload } from "antd";
 import React, { useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { PlusOutlined } from "@ant-design/icons";
+import { Loading3QuartersOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const initalState = {
@@ -10,20 +10,21 @@ const initalState = {
   goalAmount: "",
   category: "",
   endDate: "",
-  image: [],
+  images: [],
   description: "",
 };
 
 const AddCampaign = () => {
   const [state, setState] = useState(initalState);
-  const [images, setImages] = useState([]);
+  const [fileList, setFileList] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const handleChange = (e) => {
     setState((s) => ({ ...s, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let { title, goalAmount, category, endDate, image, description } = state;
+    let { title, goalAmount, category, endDate, description } = state;
 
     title = title.trim();
     goalAmount = goalAmount.trim();
@@ -36,26 +37,42 @@ const AddCampaign = () => {
       !goalAmount ||
       !category ||
       !endDate ||
-      !image ||
+      fileList.length === 0 ||
       !description
     ) {
-      return;
+      return message.error("All fields are required");
     }
 
-    const formData = {
-      title,
-      goalAmount,
-      category,
-      endDate,
-      image: images,
-      description,
-    };
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/campaign/create`,
-      formData
-    );
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("goalAmount", goalAmount);
+    formData.append("category", category);
+    formData.append("endDate", endDate);
+    formData.append("description", description);
+    fileList.forEach((f) => {
+      if (f.originFileObj) {
+        formData.append("images", f.originFileObj);
+      }
+    });
+    try {
+      setIsProcessing(true);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/campaign/create`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      console.log(res.data);
+      message.success("Campaign Created Successfully");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
-
   return (
     <div className="mx-auto p-3 md:max-w-[80%] w-full">
       <div className="my-10">
@@ -77,10 +94,11 @@ const AddCampaign = () => {
               </Form.Item>
             </Col>
             <Col lg={12} md={12} sm={24} xs={24}>
-              <Form.Item label="Goal Amount">
+              <Form.Item label="Goal Amount in USD">
                 <input
                   placeholder="Goal Amount"
                   name="goalAmount"
+                  type="number"
                   className="input-field"
                   onChange={handleChange}
                 />
@@ -114,7 +132,9 @@ const AddCampaign = () => {
               <Form.Item label="Image">
                 <Upload
                   accept=".png, .jpg, .jpeg,.webp"
-                  onChange={(file) => setImages(file.fileList)}
+                  beforeUpload={() => false}
+                  fileList={fileList}
+                  onChange={({ fileList }) => setFileList(fileList)}
                   multiple
                   listType="picture-card"
                 >
@@ -149,16 +169,22 @@ const AddCampaign = () => {
             <Col lg={24} md={24} sm={24} xs={24}>
               <div className="text-center flex gap-5 items-center justify-center">
                 <button
-                  // onClick={handleCancel}
                   className="btn-beta !px-10 transition-150"
                 >
-                  Cancel
+                  Clear
                 </button>
                 <button
                   onClick={handleSubmit}
+                  disabled={isProcessing ? true : false}
                   className="btn-primary !px-10 transition-150"
                 >
-                  Submit
+                  {isProcessing ? (
+                    <p className="!animate-spin">
+                      <Loading3QuartersOutlined />
+                    </p>
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </div>
             </Col>

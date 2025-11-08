@@ -12,7 +12,7 @@ campaignRouter.post(
   "/create",
   verifyToken,
   upload.array("images"),
-  async (req, res) => createController
+  createController
 );
 
 module.exports = campaignRouter;

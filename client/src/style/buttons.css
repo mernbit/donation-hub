@@ -6,7 +6,6 @@
   @apply cursor-pointer bg-[#1230AE] text-white px-5 py-2 rounded hover:brightness-90;
 }
 
-
 .btn-primary {
   @apply cursor-pointer bg-[#6C48C5] text-white px-5 py-2 rounded hover:brightness-90;
 }
@@ -21,4 +20,8 @@
 
 .btn-success {
   @apply cursor-pointer bg-[#28A745] text-white px-5 py-2 rounded hover:brightness-90;
+}
+
+.btn-beta {
+  @apply px-5 py-2 rounded bg-red-500 text-white hover:brightness-90;
 }
