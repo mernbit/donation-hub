@@ -5,7 +5,6 @@ import { useAuthContext } from "./contexts/Auth/AuthContext";
 
 const App = () => {
   const {isAuth, user} = useAuthContext();
-  console.log(isAuth, user)
   return (
     <main>
       <Routes />

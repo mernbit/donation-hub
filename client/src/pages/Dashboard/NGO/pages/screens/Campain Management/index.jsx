@@ -22,7 +22,7 @@ const CampaignManagement = () => {
         <div className="max-w-[500px] mx-auto p-3">
           <Input.Search
             placeholder="Search Campaign"
-            className="border rounded-lg"
+            className="border border-gray-300 rounded-lg"
           />
         </div>
         <div className="">

@@ -1,14 +1,130 @@
-import React from 'react'
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Col, Row } from "antd";
+import { CloseOutlined, MoreOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 const Active = () => {
+  const navigate = useNavigate();
+  const [campaigns, setCampaigns] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [propogation, setPropogation] = useState(true);
+  const getCampaigns = async () => {
+    try {
+      const res = await axios.get(
+        import.meta.env.VITE_API_URL + "/api/campaign/active",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      console.log(res);
+      setCampaigns(res.data.campaigns);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getCampaigns();
+  }, []);
 
-
+  const menuOpen = (id) => {
+    setIsOpen(id);
+  };
 
   return (
-    <div>
-
+    <div className="">
+      <div className="">
+        <Row gutter={[16, 16]}>
+          {campaigns.map((c, i) => {
+            return (
+              <Col
+                key={c._id}
+                lg={8}
+                md={12}
+                xs={24}
+                sm={24}
+                className="relative"
+              >
+                <div
+                  onClick={() =>
+                    propogation &&
+                    navigate(`/dashboard/campaign-management/${c._id}`)
+                  }
+                  className="cursor-pointer h-full flex flex-col group rounded-2xl overflow-hidden border border-gray-300 bg-white shadow-sm hover:shadow-lg transition-all duration-200 ease-out hover:-translate-y-0.5"
+                >
+                  {isOpen === c._id && (
+                    <ul
+                      onMouseEnter={() => setPropogation(false)}
+                      onMouseLeave={() => setPropogation(true)}
+                      className="absolute max-h-[100px] overflow-y-scroll z-10 top-10 right-15 bg-white p-1 rounded-lg"
+                    >
+                      <li className="p-2 cursor-pointer hover:bg-gray-200">
+                        Edit Campaign
+                      </li>
+                    </ul>
+                  )}
+                  <div className="relative">
+                    <img
+                      className="w-full h-60 object-cover"
+                      src={c.image[0]}
+                      alt={c.title}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-80"></div>
+                    <div className="absolute top-3 left-3 right-3">
+                      <div className="flex justify-between ">
+                        <div className="inline-flex border border-gray-400 items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/90 text-gray-800 shadow-sm">
+                          Goal: ${c.goalAmount}
+                        </div>
+                        <div
+                          onMouseEnter={() => setPropogation(false)}
+                          onMouseLeave={() => setPropogation(true)}
+                          className="inline-flex border border-gray-400 cursor-pointer items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/90 text-gray-800 shadow-sm"
+                          onClick={() => {
+                            isOpen == c._id ? menuOpen(false) : menuOpen(c._id);
+                          }}
+                        >
+                          {isOpen == c._id ? (
+                            <CloseOutlined className="text-xl " />
+                          ) : (
+                            <MoreOutlined className="text-xl rotate-90 " />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h2 className="capitalize text-white text-lg font-semibold drop-shadow-sm line-clamp-2">
+                        {c.category}
+                      </h2>
+                    </div>
+                  </div>
+                  <div className="px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: c.description,
+                        }}
+                        className="text-sm text-gray-500 overflow-hidden line-clamp-1"
+                      ></div>
+                      <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    </div>
+                  </div>
+                  <div className="px-4 py-3 border-t mt-auto border-gray-100 bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <button className="btn-danger hover:opacity-90 transition-opacity">
+                      Delete Campaign
+                    </button>
+                    <button className="btn-primary hover:opacity-90 transition-opacity">
+                      Mark as Completed
+                    </button>
+                  </div>
+                </div>
+              </Col>
+            );
+          })}
+        </Row>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Active
+export default Active;

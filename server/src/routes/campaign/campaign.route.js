@@ -5,6 +5,8 @@ const upload = multer({ dest: "uploads/" });
 const Campaign = require("../../models/campaign/campaign.model");
 const {
   createController,
+  activeController,
+  getSingleController,
 } = require("../../controllers/campaign/campaign.controller");
 const verifyToken = require("../../middlewares/verifyToken");
 
@@ -14,5 +16,8 @@ campaignRouter.post(
   upload.array("images"),
   createController
 );
+
+campaignRouter.get("/active", verifyToken, activeController);
+campaignRouter.get("/get/:id", verifyToken, getSingleController);
 
 module.exports = campaignRouter;
