@@ -5,10 +5,11 @@ import "react-quill-new/dist/quill.snow.css";
 import { Loading3QuartersOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+const BASE_URL = "https://res.cloudinary.com/demo/image/upload/";
 
 const Campaign = () => {
   const [campaign, setCampaign] = useState(null);
-  const initalState = {
+  let initalState = {
     title: campaign?.title || "",
     goalAmount: campaign?.goalAmount || "",
     category: campaign?.category || "",
@@ -16,6 +17,18 @@ const Campaign = () => {
     images: campaign?.images || [],
     description: campaign?.description || "",
   };
+  useEffect(() => {
+    if (campaign) {
+      setState({
+        title: campaign?.title || "",
+        goalAmount: campaign?.goalAmount || "",
+        category: campaign?.category || "",
+        endDate: campaign?.endDate || "",
+        images: campaign?.images || [],
+        description: campaign?.description || "",
+      });
+    }
+  }, [campaign]);
   const { id } = useParams();
   const [state, setState] = useState(initalState);
   const [fileList, setFileList] = useState([]);
@@ -33,6 +46,15 @@ const Campaign = () => {
       );
       console.log(res.data);
       setCampaign(res.data.campaign);
+      setFileList(
+        (res.data.campaign.images || []).map((imgUrl, index) => ({
+          uid: String(index),
+          name: `image-${index}`,
+          status: "done",
+          url: imgUrl,
+        }))
+      );
+      console.log(fileList)
     } catch (error) {
       console.log(error);
     }
@@ -159,13 +181,11 @@ const Campaign = () => {
             <Col span={24}>
               <Form.Item label="Image">
                 <Upload
-                  accept=".png, .jpg, .jpeg,.webp"
+                  accept=".png,.jpg,.jpeg,.webp"
                   beforeUpload={() => false}
+                  listType="picture-card"
                   fileList={fileList}
                   onChange={({ fileList }) => setFileList(fileList)}
-                  multiple
-                  listType="picture-card"
-                  value={state.images}
                 >
                   <PlusOutlined />
                 </Upload>
