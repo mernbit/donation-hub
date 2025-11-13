@@ -1,39 +1,37 @@
-import { Button, Col, Form, message, Row, Select, Upload } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Image,
+  message,
+  Row,
+  Select,
+  Upload,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { Loading3QuartersOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-const BASE_URL = "https://res.cloudinary.com/demo/image/upload/";
 
 const Campaign = () => {
-  const [campaign, setCampaign] = useState(null);
-  let initalState = {
-    title: campaign?.title || "",
-    goalAmount: campaign?.goalAmount || "",
-    category: campaign?.category || "",
-    endDate: campaign?.endDate || "",
-    images: campaign?.images || [],
-    description: campaign?.description || "",
-  };
-  useEffect(() => {
-    if (campaign) {
-      setState({
-        title: campaign?.title || "",
-        goalAmount: campaign?.goalAmount || "",
-        category: campaign?.category || "",
-        endDate: campaign?.endDate || "",
-        images: campaign?.images || [],
-        description: campaign?.description || "",
-      });
-    }
-  }, [campaign]);
   const { id } = useParams();
-  const [state, setState] = useState(initalState);
+  const [campaign, setCampaign] = useState(null);
+  const [state, setState] = useState({
+    title: "",
+    goalAmount: "",
+    category: "",
+    endDate: "",
+    description: "",
+  });
+
   const [fileList, setFileList] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
 
+  // Load campaign
   const getCampaign = async () => {
     try {
       const res = await axios.get(
@@ -44,19 +42,10 @@ const Campaign = () => {
           },
         }
       );
-      console.log(res.data);
       setCampaign(res.data.campaign);
-      setFileList(
-        (res.data.campaign.images || []).map((imgUrl, index) => ({
-          uid: String(index),
-          name: `image-${index}`,
-          status: "done",
-          url: imgUrl,
-        }))
-      );
-      console.log(fileList)
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      message.error("Failed to load campaign");
     }
   };
 
@@ -64,27 +53,76 @@ const Campaign = () => {
     getCampaign();
   }, []);
 
+  // Map API images to Antd Upload fileList
+  const mapImagesToFileList = (images) =>
+    images.map((url, index) => ({
+      uid: `-${index}`,
+      name: `image-${index}`,
+      status: "done",
+      url,
+    }));
+
+  // Populate form when campaign loads
+  useEffect(() => {
+    if (campaign) {
+      setState({
+        title: campaign.title || "",
+        goalAmount: campaign.goalAmount || "",
+        category: campaign.category || "",
+        endDate: campaign.endDate || "",
+        description: campaign.description || "",
+      });
+
+      setFileList(mapImagesToFileList(campaign.images || []));
+    }
+  }, [campaign]);
+
+  // Handle input change
   const handleChange = (e) => {
-    setState((s) => ({ ...s, [e.target.name]: e.target.value }));
+    setState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // Convert file to base64 for preview
+  const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  // Handle preview for both new and existing images
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+  };
+
+  // Upload button
+  const uploadButton = (
+    <button
+      style={{ border: 0, background: "none" }}
+      type="button"
+    >
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </button>
+  );
+
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let { title, goalAmount, category, endDate, description } = state;
-
-    title = title.trim();
-    goalAmount = goalAmount.trim();
-    category = category.trim();
-    endDate = endDate.trim();
-    description = description.trim();
+    const { title, goalAmount, category, endDate, description } = state;
 
     if (
-      !title ||
-      !goalAmount ||
-      !category ||
-      !endDate ||
+      !title.trim() ||
+      !goalAmount.trim() ||
+      !category.trim() ||
+      !endDate.trim() ||
       fileList.length === 0 ||
-      !description
+      !description.trim()
     ) {
       return message.error("All fields are required");
     }
@@ -95,11 +133,12 @@ const Campaign = () => {
     formData.append("category", category);
     formData.append("endDate", endDate);
     formData.append("description", description);
+
     fileList.forEach((f) => {
-      if (f.originFileObj) {
-        formData.append("images", f.originFileObj);
-      }
+      if (f.originFileObj) formData.append("images", f.originFileObj);
+      else if (f.url) formData.append("existingImages", f.url);
     });
+
     try {
       setIsProcessing(true);
       const res = await axios.put(
@@ -111,22 +150,25 @@ const Campaign = () => {
           },
         }
       );
+      message.success("Campaign updated successfully");
       console.log(res.data);
-      message.success("Campaign Created Successfully");
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      message.error("Failed to update campaign");
     } finally {
       setIsProcessing(false);
     }
   };
+
   return (
     <div className="mx-auto p-3 md:max-w-[80%] w-full">
       <div className="my-10">
         <h2 className="text-4xl text-center text-primary font-bold">
-          Add Campaign
+          Update Campaign
         </h2>
       </div>
-      <div className="my-10 shadow-lg border border-gray-200 rounded-xl lg:max-w-[80%] max-w-[100%] mx-auto w-full p-10">
+
+      <div className="my-10 shadow-lg border border-gray-200 rounded-xl lg:max-w-[80%] mx-auto w-full p-10">
         <Form layout="vertical">
           <Row gutter={[16, 16]}>
             <Col lg={12} md={12} sm={24} xs={24}>
@@ -140,25 +182,29 @@ const Campaign = () => {
                 />
               </Form.Item>
             </Col>
+
             <Col lg={12} md={12} sm={24} xs={24}>
-              <Form.Item label="Goal Amount in USD">
+              <Form.Item label="Goal Amount (USD)">
                 <input
                   placeholder="Goal Amount"
                   name="goalAmount"
-                  value={state.goalAmount}
                   type="number"
+                  value={state.goalAmount}
                   className="input-field"
                   onChange={handleChange}
                 />
               </Form.Item>
             </Col>
+
             <Col lg={12} md={12} sm={24} xs={24}>
               <Form.Item label="Category">
                 <Select
                   placeholder="Select Category"
                   className="m-3"
                   value={state.category}
-                  onChange={(val) => setState((s) => ({ ...s, category: val }))}
+                  onChange={(val) =>
+                    setState((s) => ({ ...s, category: val }))
+                  }
                 >
                   <Select.Option value="education">Education</Select.Option>
                   <Select.Option value="health">Health</Select.Option>
@@ -167,6 +213,7 @@ const Campaign = () => {
                 </Select>
               </Form.Item>
             </Col>
+
             <Col lg={12} md={12} sm={24} xs={24}>
               <Form.Item label="End Date">
                 <input
@@ -178,21 +225,37 @@ const Campaign = () => {
                 />
               </Form.Item>
             </Col>
+
             <Col span={24}>
-              <Form.Item label="Image">
+              <Form.Item label="Images">
                 <Upload
                   accept=".png,.jpg,.jpeg,.webp"
                   beforeUpload={() => false}
                   listType="picture-card"
                   fileList={fileList}
+                  onPreview={handlePreview}
                   onChange={({ fileList }) => setFileList(fileList)}
                 >
-                  <PlusOutlined />
+                  {fileList.length >= 8 ? null : uploadButton}
                 </Upload>
+
+                {previewImage && (
+                  <Image
+                    wrapperStyle={{ display: "none" }}
+                    preview={{
+                      visible: previewOpen,
+                      onVisibleChange: (visible) => setPreviewOpen(visible),
+                      afterOpenChange: (visible) =>
+                        !visible && setPreviewImage(""),
+                    }}
+                    src={previewImage}
+                  />
+                )}
               </Form.Item>
             </Col>
-            <Col lg={24} md={24} sm={24} xs={24}>
-              <Form.Item label="Description" className="editor-box">
+
+            <Col span={24}>
+              <Form.Item label="Description">
                 <ReactQuill
                   onChange={(val) =>
                     setState((s) => ({ ...s, description: val }))
@@ -216,11 +279,12 @@ const Campaign = () => {
                 />
               </Form.Item>
             </Col>
-            <Col lg={24} md={24} sm={24} xs={24}>
+
+            <Col span={24}>
               <div className="text-center flex gap-5 items-center justify-center">
                 <button
                   onClick={handleSubmit}
-                  disabled={isProcessing ? true : false}
+                  disabled={isProcessing}
                   className="btn-primary !px-10 transition-150"
                 >
                   {isProcessing ? (
