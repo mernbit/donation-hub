@@ -7,6 +7,7 @@ const {
   createController,
   activeController,
   getSingleController,
+  updateController,
 } = require("../../controllers/campaign/campaign.controller");
 const verifyToken = require("../../middlewares/verifyToken");
 
@@ -19,5 +20,6 @@ campaignRouter.post(
 
 campaignRouter.get("/active", verifyToken, activeController);
 campaignRouter.get("/get/:id", verifyToken, getSingleController);
+campaignRouter.put("/update/:id", verifyToken, upload.array("images"), updateController);
 
 module.exports = campaignRouter;

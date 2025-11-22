@@ -1,23 +1,16 @@
-import {
-  Button,
-  Col,
-  Form,
-  Image,
-  message,
-  Row,
-  Select,
-  Upload,
-} from "antd";
+import { Col, Form, Image, message, Row, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { Loading3QuartersOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
+import { CloseOutlined } from "@ant-design/icons";
+import { Loading3QuartersOutlined } from "@ant-design/icons";
 const Campaign = () => {
   const { id } = useParams();
   const [campaign, setCampaign] = useState(null);
+  const [imageList, setImageList] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [state, setState] = useState({
     title: "",
     goalAmount: "",
@@ -26,12 +19,9 @@ const Campaign = () => {
     description: "",
   });
 
-  const [fileList, setFileList] = useState([]);
+  const [file, setFile] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
 
-  // Load campaign
   const getCampaign = async () => {
     try {
       const res = await axios.get(
@@ -43,6 +33,12 @@ const Campaign = () => {
         }
       );
       setCampaign(res.data.campaign);
+      setImageList(res.data.campaign.image);
+      setPreviews(res.data.campaign.image.map((img) => ({
+        uid: crypto.randomUUID(),
+        preview: img,
+      })));
+      console.log(res.data.campaign);
     } catch (error) {
       console.error(error);
       message.error("Failed to load campaign");
@@ -53,16 +49,6 @@ const Campaign = () => {
     getCampaign();
   }, []);
 
-  // Map API images to Antd Upload fileList
-  const mapImagesToFileList = (images) =>
-    images.map((url, index) => ({
-      uid: `-${index}`,
-      name: `image-${index}`,
-      status: "done",
-      url,
-    }));
-
-  // Populate form when campaign loads
   useEffect(() => {
     if (campaign) {
       setState({
@@ -72,71 +58,37 @@ const Campaign = () => {
         endDate: campaign.endDate || "",
         description: campaign.description || "",
       });
-
-      setFileList(mapImagesToFileList(campaign.images || []));
     }
   }, [campaign]);
 
-  // Handle input change
   const handleChange = (e) => {
     setState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  // Convert file to base64 for preview
-  const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
-  // Handle preview for both new and existing images
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-  };
-
-  // Upload button
-  const uploadButton = (
-    <button
-      style={{ border: 0, background: "none" }}
-      type="button"
-    >
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </button>
-  );
-
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { title, goalAmount, category, endDate, description } = state;
 
     if (
       !title.trim() ||
-      !goalAmount.trim() ||
+      !goalAmount ||
       !category.trim() ||
       !endDate.trim() ||
-      fileList.length === 0 ||
+      (file.length === 0 && imageList.length === 0) ||
       !description.trim()
     ) {
       return message.error("All fields are required");
     }
-
     const formData = new FormData();
     formData.append("title", title);
     formData.append("goalAmount", goalAmount);
     formData.append("category", category);
     formData.append("endDate", endDate);
     formData.append("description", description);
-
-    fileList.forEach((f) => {
-      if (f.originFileObj) formData.append("images", f.originFileObj);
-      else if (f.url) formData.append("existingImages", f.url);
+    imageList.forEach((img) => {
+      formData.append("existingImages", img);
+    });
+    file.forEach((f) => {
+      formData.append("images", f);
     });
 
     try {
@@ -202,9 +154,7 @@ const Campaign = () => {
                   placeholder="Select Category"
                   className="m-3"
                   value={state.category}
-                  onChange={(val) =>
-                    setState((s) => ({ ...s, category: val }))
-                  }
+                  onChange={(val) => setState((s) => ({ ...s, category: val }))}
                 >
                   <Select.Option value="education">Education</Select.Option>
                   <Select.Option value="health">Health</Select.Option>
@@ -228,29 +178,84 @@ const Campaign = () => {
 
             <Col span={24}>
               <Form.Item label="Images">
-                <Upload
-                  accept=".png,.jpg,.jpeg,.webp"
-                  beforeUpload={() => false}
-                  listType="picture-card"
-                  fileList={fileList}
-                  onPreview={handlePreview}
-                  onChange={({ fileList }) => setFileList(fileList)}
-                >
-                  {fileList.length >= 8 ? null : uploadButton}
-                </Upload>
+                <label htmlFor="images" className="">
+                  <span className="btn-primary">Upload Images</span>
+                  <input
+                    id="images"
+                    className="hidden"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const newFiles = Array.from(e.target.files);
+                      setFile((prev) => [...prev, ...newFiles]);
 
-                {previewImage && (
-                  <Image
-                    wrapperStyle={{ display: "none" }}
-                    preview={{
-                      visible: previewOpen,
-                      onVisibleChange: (visible) => setPreviewOpen(visible),
-                      afterOpenChange: (visible) =>
-                        !visible && setPreviewImage(""),
+                      const generatedPreviews = newFiles.map((f) => ({
+                        uid: crypto.randomUUID(),
+                        preview: URL.createObjectURL(f),
+                      }));
+                      setPreviews((prev) => [...prev, ...generatedPreviews]);
                     }}
-                    src={previewImage}
+                    multiple
                   />
-                )}
+                </label>
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="Campaign Images">
+                <div className="">
+                  <div className="flex gap-5">
+                    {imageList?.map((img, i) => (
+                      <div key={i} className="relative p-1">
+                        <div
+                          onClick={() => {
+                            setImageList((prev) =>
+                              prev.filter((_, index) => index !== i)
+                            );
+                          }}
+                          className="absolute top-2 right-2 bg-white/70 transition-150 hover:bg-white cursor-pointer z-10 rounded-full w-5 h-5 flex items-center justify-center"
+                        >
+                          <CloseOutlined />
+                        </div>
+                        <div className="w-full">
+                          <Image
+                            key={i}
+                            src={img}
+                            alt={img}
+                            className="rounded-lg !w-24 !h-24 !object-cover"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="Preview">
+                <div className="flex gap-5 ">
+                  {file?.map((f, i) => (
+                    <div key={i} className="relative p-1">
+                      <div
+                        onClick={() => {
+                          setFile((prev) =>
+                            prev.filter((_, index) => index !== i)
+                          );
+                        }}
+                        className="absolute top-2 right-2 bg-white/70 transition-150 hover:bg-white cursor-pointer z-10 rounded-full w-5 h-5 flex items-center justify-center"
+                      >
+                        <CloseOutlined />
+                      </div>
+                      <div className="w-full">
+                        <Image
+                          key={f?.uid}
+                          src={URL.createObjectURL(f)}
+                          alt={f?.name}
+                          className="rounded-lg !w-24 !h-24 !object-cover"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </Form.Item>
             </Col>
 
