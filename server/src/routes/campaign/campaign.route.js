@@ -8,6 +8,7 @@ const {
   activeController,
   getSingleController,
   updateController,
+  deleteController,
 } = require("../../controllers/campaign/campaign.controller");
 const verifyToken = require("../../middlewares/verifyToken");
 
@@ -21,5 +22,6 @@ campaignRouter.post(
 campaignRouter.get("/active", verifyToken, activeController);
 campaignRouter.get("/get/:id", verifyToken, getSingleController);
 campaignRouter.put("/update/:id", verifyToken, upload.array("images"), updateController);
+campaignRouter.delete("/delete/:id", verifyToken, deleteController);
 
 module.exports = campaignRouter;

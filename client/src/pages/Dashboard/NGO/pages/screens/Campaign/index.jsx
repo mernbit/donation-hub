@@ -34,10 +34,12 @@ const Campaign = () => {
       );
       setCampaign(res.data.campaign);
       setImageList(res.data.campaign.image);
-      setPreviews(res.data.campaign.image.map((img) => ({
-        uid: crypto.randomUUID(),
-        preview: img,
-      })));
+      setPreviews(
+        res.data.campaign.image.map((img) => ({
+          uid: crypto.randomUUID(),
+          preview: img,
+        }))
+      );
       console.log(res.data.campaign);
     } catch (error) {
       console.error(error);
@@ -68,25 +70,31 @@ const Campaign = () => {
     e.preventDefault();
     const { title, goalAmount, category, endDate, description } = state;
 
-    if (
-      !title.trim() ||
-      !goalAmount ||
-      !category.trim() ||
-      !endDate.trim() ||
-      (file.length === 0 && imageList.length === 0) ||
-      !description.trim()
-    ) {
-      return message.error("All fields are required");
+    if (!title) return message.error("Title is required");
+    if (!goalAmount) return message.error("Goal Amount is required");
+    if (!category) return message.error("Category is required");
+    if (!endDate) return message.error("End Date is required");
+    if (!description) return message.error("Description is required");
+    console.log("Image list length", imageList.length);
+    if (imageList.length === 0) {
+      if (file.length === 0) {
+        return message.error("At least one image is required");
+      }
     }
+
+    // file list is the variable where user uploads new images
+    // imageList is the variable where existing images are stored
     const formData = new FormData();
     formData.append("title", title);
     formData.append("goalAmount", goalAmount);
     formData.append("category", category);
     formData.append("endDate", endDate);
     formData.append("description", description);
-    imageList.forEach((img) => {
-      formData.append("existingImages", img);
-    });
+    if (imageList.length > 0) {
+      imageList.forEach((img) => {
+        formData.append("existingImages", img);
+      });
+    }
     file.forEach((f) => {
       formData.append("images", f);
     });
@@ -203,9 +211,9 @@ const Campaign = () => {
             <Col span={24}>
               <Form.Item label="Campaign Images">
                 <div className="">
-                  <div className="flex gap-5">
+                  <div className="flex md:gap-5 overflow-x-scroll">
                     {imageList?.map((img, i) => (
-                      <div key={i} className="relative p-1">
+                      <div key={i} className="relative p-1 ">
                         <div
                           onClick={() => {
                             setImageList((prev) =>
@@ -221,7 +229,7 @@ const Campaign = () => {
                             key={i}
                             src={img}
                             alt={img}
-                            className="rounded-lg !w-24 !h-24 !object-cover"
+                            className="rounded-lg !min-w-24 !w-24 !min-h-24 !h-24 !object-cover"
                           />
                         </div>
                       </div>

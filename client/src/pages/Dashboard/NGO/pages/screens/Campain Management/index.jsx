@@ -1,7 +1,7 @@
 import React from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { Input, Tabs } from "antd";
+import { Input } from "antd";
 import AllCampaign from "./AllCampaign";
 const CampaignManagement = () => {
   return (

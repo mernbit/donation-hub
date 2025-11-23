@@ -111,10 +111,9 @@ const updateController = async (req, res) => {
     console.log("uploadResult: ", uploadResult);
     let images = [];
     if (existingImages) {
-      images.push(existingImages);
+      images.push(...existingImages);
     }
     images.push(...uploadResult);
-    console.log("images: ", images);
     if (
       !title.trim() ||
       !goalAmount.trim() ||
@@ -144,9 +143,23 @@ const updateController = async (req, res) => {
     res.status(500).json({ msg: "Error updating campaign", error });
   }
 };
+
+const deleteController = async (req, res) => {
+  try {
+    const campaign = await Campaign.findByIdAndDelete(req.params.id);
+    if (!campaign) {
+      return res.status(404).json({ msg: "Campaign not found" });
+    }
+    res.status(200).json({ campaign, msg: "success" });
+  } catch (error) {
+    res.status(500).json({ msg: "Error deleting campaign", error });
+  }
+};
+
 module.exports = {
   createController,
   activeController,
   getSingleController,
   updateController,
+  deleteController,
 };

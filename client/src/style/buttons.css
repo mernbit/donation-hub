@@ -1,27 +1,27 @@
 .nav-link {
-  @apply cursor-pointer p-3 font-semibold text-white/80 hover:text-white;
+  @apply cursor-pointer transition-all duration-150 p-3 font-semibold text-white/80 hover:text-white;
 }
 
 .btn-brand {
-  @apply cursor-pointer bg-[#1230AE] text-white px-5 py-2 rounded hover:brightness-90;
+  @apply cursor-pointer transition-all duration-150 bg-[#1230AE] text-white px-5 py-2 select-none rounded hover:brightness-80;
 }
 
 .btn-primary {
-  @apply cursor-pointer bg-[#6C48C5] text-white px-5 py-2 rounded hover:brightness-90;
+  @apply cursor-pointer transition-all duration-150 bg-[#6C48C5] text-white px-5 py-2 select-none rounded hover:brightness-80;
 }
 
 .btn-secondary {
-  @apply cursor-pointer bg-[#FEC5F6] text-black px-5 py-2 rounded hover:brightness-90;
+  @apply cursor-pointer transition-all duration-150 bg-[#FEC5F6] text-black px-5 py-2 select-none rounded hover:brightness-80;
 }
 
 .btn-danger {
-  @apply cursor-pointer bg-[#DC3545] text-white px-5 py-2 rounded hover:brightness-90;
+  @apply cursor-pointer transition-all duration-150 bg-[#DC3545] text-white px-5 py-2 select-none rounded hover:brightness-80;
 }
 
 .btn-success {
-  @apply cursor-pointer bg-[#28A745] text-white px-5 py-2 rounded hover:brightness-90;
+  @apply cursor-pointer transition-all duration-150 bg-[#28A745] text-white px-5 py-2 select-none rounded hover:brightness-80;
 }
 
 .btn-beta {
-  @apply px-5 py-2 rounded bg-red-500 text-white hover:brightness-90;
+  @apply px-5 py-2 rounded bg-red-500 text-white hover:brightness-80;
 }

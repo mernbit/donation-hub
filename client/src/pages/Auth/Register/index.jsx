@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Form, Col, Row, Divider, message, Select } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LockFilled, UserOutlined } from "@ant-design/icons";
 const Register = () => {
   const navigate = useNavigate();
@@ -143,6 +143,7 @@ const Register = () => {
                     <Col span={24}>
                       <Form.Item label="Role" required>
                         <Select
+                          placeholder="What defines you well?"
                           className="transition-150"
                           onChange={(val) => setRole(val)}
                         >
@@ -150,6 +151,11 @@ const Register = () => {
                           <Select.Option value="ngo">NGO</Select.Option>
                         </Select>
                       </Form.Item>
+                    </Col>
+                    <Col span={24}>
+                      <Link to="/auth/login" className="text-center">
+                        Already have an account?
+                      </Link>
                     </Col>
                     <Col span={24}>
                       <Form.Item className="text-center">

@@ -3,11 +3,14 @@ import axios from "axios";
 import { Col, Row } from "antd";
 import { CloseOutlined, MoreOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useCampaignContext } from "../../../../../../../contexts/Campaigns/CampaignContext";
+
 const Active = () => {
   const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [propogation, setPropogation] = useState(true);
+  const { handleDelete } = useCampaignContext();
   const getCampaigns = async () => {
     try {
       const res = await axios.get(
@@ -31,7 +34,6 @@ const Active = () => {
   const menuOpen = (id) => {
     setIsOpen(id);
   };
-
   return (
     <div className="">
       <div className="">
@@ -101,19 +103,40 @@ const Active = () => {
                   <div className="px-4 py-3">
                     <div className="flex items-center justify-between">
                       <div
-                        dangerouslySetInnerHTML={{
-                          __html: c.description,
-                        }}
-                        className="text-sm text-gray-500 overflow-hidden line-clamp-1"
-                      ></div>
+                        // dangerouslySetInnerHTML={{
+                        //   __html: c.description,
+                        // }}
+                        className="capitalize  text-sm text-gray-500 overflow-hidden line-clamp-1"
+                      >
+                        {c.title}
+                      </div>
                       <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
                     </div>
                   </div>
                   <div className="px-4 py-3 border-t mt-auto border-gray-100 bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <button className="btn-danger hover:opacity-90 transition-opacity">
+                    <button
+                      onMouseEnter={() => setPropogation(false)}
+                      onMouseLeave={() => setPropogation(true)}
+                      className="btn-danger hover:opacity-90 transition-opacity"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCampaigns(
+                          campaigns.filter((campaign) => campaign._id !== c._id)
+                        );
+                        handleDelete(c._id);
+                      }}
+                    >
                       Delete Campaign
                     </button>
-                    <button className="btn-primary hover:opacity-90 transition-opacity">
+                    <button
+                      onMouseEnter={() => setPropogation(false)}
+                      onMouseLeave={() => setPropogation(true)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log("Function to be built");
+                      }}
+                      className="btn-primary hover:opacity-90 transition-opacity"
+                    >
                       Mark as Completed
                     </button>
                   </div>
