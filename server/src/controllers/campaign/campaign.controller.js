@@ -110,10 +110,17 @@ const updateController = async (req, res) => {
     console.log("existingImages: ", existingImages);
     console.log("uploadResult: ", uploadResult);
     let images = [];
-    if (existingImages) {
-      images.push(...existingImages);
+    if (existing) {
+      console.log("existing type: ", typeof existing);
+      if (typeof existing == String) {
+        images.push(existing);
+      } else {
+        images.push(...existing);
+      }
     }
-    images.push(...uploadResult);
+    if (uploadResult) {
+      images.push(...uploadResult);
+    }
     if (
       !title.trim() ||
       !goalAmount.trim() ||

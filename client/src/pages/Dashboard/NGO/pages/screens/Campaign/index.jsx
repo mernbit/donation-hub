@@ -95,6 +95,8 @@ const Campaign = () => {
         formData.append("existingImages", img);
       });
     }
+    console.log(typeof imageList);
+    console.log(imageList);
     file.forEach((f) => {
       formData.append("images", f);
     });
