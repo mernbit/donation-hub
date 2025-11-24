@@ -57,7 +57,7 @@ const AddCampaign = () => {
     try {
       setIsProcessing(true);
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/campaign/create`,
+        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/create`,
         formData,
         {
           headers: {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Col, Row } from "antd";
+import { Col, message, Row } from "antd";
 import { CloseOutlined, MoreOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useCampaignContext } from "../../../../../../../contexts/Campaigns/CampaignContext";
@@ -11,10 +11,11 @@ const Active = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [propogation, setPropogation] = useState(true);
   const { handleDelete } = useCampaignContext();
+
   const getCampaigns = async () => {
     try {
       const res = await axios.get(
-        import.meta.env.VITE_API_URL + "/api/campaign/active",
+        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/active`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -30,6 +31,24 @@ const Active = () => {
   useEffect(() => {
     getCampaigns();
   }, []);
+
+  const handleComplete = (id) => {
+    try {
+      const res = axios.put(
+        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/set-completed/${id}`,
+        { status: "complted" },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      message.success("Campaign completed successfully");
+    } catch (error) {
+      console.log(error);
+      message.error("Campaign completed failed");
+    }
+  };
 
   const menuOpen = (id) => {
     setIsOpen(id);
@@ -133,7 +152,7 @@ const Active = () => {
                       onMouseLeave={() => setPropogation(true)}
                       onClick={(e) => {
                         e.stopPropagation();
-                        console.log("Function to be built");
+                        handleComplete(c._id);
                       }}
                       className="btn-primary hover:opacity-90 transition-opacity"
                     >

@@ -25,7 +25,7 @@ const Campaign = () => {
   const getCampaign = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/campaign/get/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/get/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -104,7 +104,7 @@ const Campaign = () => {
     try {
       setIsProcessing(true);
       const res = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/campaign/update/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/update/${id}`,
         formData,
         {
           headers: {
