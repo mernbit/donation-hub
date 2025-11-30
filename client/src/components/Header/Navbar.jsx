@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { CloseOutlined, MenuOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/Auth/AuthContext";
 const Navbar = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { isAuth, handleLogout } = useAuthContext();
   return (
@@ -29,7 +30,10 @@ const Navbar = () => {
 
         {isAuth ? (
           <div className="hidden md:block">
-            <button onClick={() => handleLogout()} className="btn-danger transition-300">
+            <button
+              onClick={() => handleLogout()}
+              className="btn-danger transition-300"
+            >
               Logout
             </button>
           </div>
@@ -50,7 +54,7 @@ const Navbar = () => {
         >
           <span className="sr-only !text-xl">Open main menu</span>
 
-          {open ? <MenuOutlined /> : <CloseOutlined />}
+          {!open ? <MenuOutlined /> : <CloseOutlined />}
         </button>
       </div>
 
@@ -84,10 +88,25 @@ const Navbar = () => {
             >
               Contact
             </a>
+            {isAuth && (
+              <a
+                className="text-white px-4 py-3 hover:bg-white/10 transition-150"
+                href="#"
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/dashboard")
+                }}
+              >
+                Dashboard
+              </a>
+            )}
           </nav>
           {isAuth ? (
             <div className="px-4 py-3 border-t border-white/10">
-              <button onClick={()=>handleLogout()} className="btn-danger transition-300">
+              <button
+                onClick={() => handleLogout()}
+                className="btn-danger transition-300"
+              >
                 Logout
               </button>
             </div>

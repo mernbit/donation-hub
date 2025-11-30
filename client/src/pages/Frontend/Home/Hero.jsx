@@ -2,7 +2,7 @@ import React from "react";
 import HeroImage from "../../../assets/hero.webp";
 const Hero = () => {
   return (
-    <div className="p-4">
+    <div className="">
       <div className="relative">
         <div className="top-[50%] left-[50%] -translate-1/2 z-50 absolute">
           <div data-aos="fade-up" className="text-center text-white">
@@ -18,7 +18,7 @@ const Hero = () => {
         <img
           src={HeroImage}
           alt="Hero"
-          className="select-none brightness-50 w-full h-[600px] rounded-xl object-cover"
+          className="select-none brightness-50 w-full h-[600px] object-cover"
         />
       </div>
     </div>

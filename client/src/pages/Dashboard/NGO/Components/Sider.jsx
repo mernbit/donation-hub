@@ -28,7 +28,7 @@ const Sider = () => {
 
   return (
     <div
-      className={`sider transition-150 bg-primary ${
+      className={`sider z-50 transition-150 bg-primary ${
         !isOpen ? "w-0" : "w-[350px] p-3"
       }`}
     >
@@ -54,7 +54,7 @@ const Sider = () => {
             <div
               className={`p-3 hover-bg-secondary hover:text-white ${
                 location.pathname === link.to && "bg-secondary !text-white"
-              } rounded transition-150 border-primary my-2 flex items-center`}
+              } rounded transition-150 border-primary my-2 flex items-center `}
             >
               <link.icons />
               <span className="ml-2">{link.label}</span>

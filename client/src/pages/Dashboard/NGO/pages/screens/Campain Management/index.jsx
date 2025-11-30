@@ -5,7 +5,7 @@ import { Input } from "antd";
 import AllCampaign from "./AllCampaign";
 const CampaignManagement = () => {
   return (
-    <div className="max-w-[80%] mx-auto w-full">
+    <div className="max-w-[80%] mx-auto w-full mt-28">
       <h1 className="text-center text-4xl font-bold my-10 text-primary">
         Campaign Management
       </h1>

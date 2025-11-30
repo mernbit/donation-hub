@@ -40,7 +40,6 @@ const Campaign = () => {
           preview: img,
         }))
       );
-      console.log(res.data.campaign);
     } catch (error) {
       console.error(error);
       message.error("Failed to load campaign");
@@ -95,8 +94,6 @@ const Campaign = () => {
         formData.append("existingImages", img);
       });
     }
-    console.log(typeof imageList);
-    console.log(imageList);
     file.forEach((f) => {
       formData.append("images", f);
     });

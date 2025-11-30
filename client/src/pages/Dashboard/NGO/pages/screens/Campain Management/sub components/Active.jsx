@@ -3,7 +3,7 @@ import axios from "axios";
 import { Col, message, Row } from "antd";
 import { CloseOutlined, MoreOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useCampaignContext } from "../../../../../../../contexts/Campaigns/CampaignContext";
+import { useCampaignContext } from "../../../../../../../contexts/Campaigns/ngo/CampaignContext";
 
 const Active = () => {
   const navigate = useNavigate();
@@ -22,7 +22,6 @@ const Active = () => {
           },
         }
       );
-      console.log(res);
       setCampaigns(res.data.campaigns);
     } catch (error) {
       console.log(error);
@@ -121,12 +120,7 @@ const Active = () => {
                   </div>
                   <div className="px-4 py-3">
                     <div className="flex items-center justify-between">
-                      <div
-                        // dangerouslySetInnerHTML={{
-                        //   __html: c.description,
-                        // }}
-                        className="capitalize  text-sm text-gray-500 overflow-hidden line-clamp-1"
-                      >
+                      <div className="capitalize  text-sm text-gray-500 overflow-hidden line-clamp-1">
                         {c.title}
                       </div>
                       <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -153,6 +147,9 @@ const Active = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         handleComplete(c._id);
+                        setCampaigns(
+                          campaigns.filter((campaign) => campaign._id !== c._id)
+                        );
                       }}
                       className="btn-primary hover:opacity-90 transition-opacity"
                     >

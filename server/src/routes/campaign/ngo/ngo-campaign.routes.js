@@ -10,6 +10,7 @@ const getSingleController = require("../../../controllers/campaign/ngo/get-singl
 const updateController = require("../../../controllers/campaign/ngo/update-campaign.controller");
 const deleteController = require("../../../controllers/campaign/ngo/delete-campaign.controller");
 const setCompletedController = require("../../../controllers/campaign/ngo/set-completed.campaign.controller");
+const getCompletedCampaignController = require("../../../controllers/campaign/ngo/get-completeed.campaign.controller");
 
 ngoCampaignRouter.post(
   "/create",
@@ -31,4 +32,6 @@ ngoCampaignRouter.put(
   verifyToken,
   setCompletedController
 );
+ngoCampaignRouter.get("/get-completed", verifyToken, getCompletedCampaignController)
+
 module.exports = ngoCampaignRouter;

@@ -88,6 +88,7 @@ const AddCampaign = () => {
                 <input
                   placeholder="Title"
                   name="title"
+                  value={state.title}
                   className="input-field"
                   onChange={handleChange}
                 />
@@ -98,6 +99,7 @@ const AddCampaign = () => {
                 <input
                   placeholder="Goal Amount"
                   name="goalAmount"
+                  value={state.goalAmount}
                   type="number"
                   className="input-field"
                   onChange={handleChange}
@@ -109,6 +111,7 @@ const AddCampaign = () => {
                 <Select
                   placeholder="Select Category"
                   className="m-3"
+                  value={state.category}
                   onChange={(val) => setState((s) => ({ ...s, category: val }))}
                 >
                   <Select.Option value="education">Education</Select.Option>
@@ -123,6 +126,7 @@ const AddCampaign = () => {
                 <input
                   type="datetime-local"
                   className="border border-gray-300 py-1 px-3 outline-none w-full rounded-lg"
+                  value={state.endDate}
                   name="endDate"
                   onChange={handleChange}
                 />
@@ -148,6 +152,7 @@ const AddCampaign = () => {
                   onChange={(val) =>
                     setState((s) => ({ ...s, description: val }))
                   }
+                  value={state.description}
                   modules={{
                     toolbar: [
                       ["bold", "italic", "underline", "strike", "blockquote"],
@@ -169,6 +174,10 @@ const AddCampaign = () => {
             <Col lg={24} md={24} sm={24} xs={24}>
               <div className="text-center flex gap-5 items-center justify-center">
                 <button
+                  onClick={() => {
+                    setState(initalState);
+                    setFileList([]);
+                  }}
                   className="btn-beta !px-10 transition-150"
                 >
                   Clear

@@ -1,6 +1,7 @@
 import { Tabs } from "antd";
 import React from "react";
 import Active from "./sub components/Active";
+import Completed from "../Completed";
 
 const AllCampaign = () => {
   return (
@@ -17,11 +18,11 @@ const AllCampaign = () => {
           {
             key: "completed",
             label: "Completed",
-            children: <p>Completed</p>,
+            children: <Completed />,
           },
           {
             key: "pending",
-            label: "Pending",
+            label: "Pending Approval",
             children: <p>Pending</p>,
           },
         ]}
