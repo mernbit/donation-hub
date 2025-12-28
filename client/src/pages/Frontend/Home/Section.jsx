@@ -13,7 +13,7 @@ const ParagraphSection = () => {
       <Row gutter={[32, 32]} align="middle">
         {/* LEFT — LOTTIE */}
         <Col lg={12} md={12} sm={24} xs={24}>
-          <div data-aos="fade-right" className="flex justify-center">
+          <div data-aos="fade-up" className="flex justify-center">
             <DotLottieReact
               src="https://lottie.host/1d18f986-958e-4429-9515-152dd33c4bb6/qFCqU9hwBb.lottie"
               className="w-full max-w-[480px]"
@@ -25,7 +25,7 @@ const ParagraphSection = () => {
         {/* RIGHT — TEXT */}
         <Col lg={12} md={12} sm={24} xs={24}>
           <div
-            data-aos="fade-left"
+            data-aos="fade-up"
             className="flex flex-col justify-center px-2 md:px-6"
           >
             <h2 className="xl:text-5xl lg:text-4xl text-3xl font-bold leading-tight mb-5">

@@ -28,8 +28,8 @@ const Sider = () => {
 
   return (
     <div
-      className={`sider z-50 transition-150 bg-primary ${
-        !isOpen ? "w-0" : "w-[350px] p-3"
+      className={`sider z-50 transition-300 bg-primary ${
+        !isOpen ? "w-0" : "md:w-[350px] w-[300px] p-3"
       }`}
     >
       <div

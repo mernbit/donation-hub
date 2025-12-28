@@ -6,14 +6,14 @@ import AllCampaign from "./AllCampaign";
 const CampaignManagement = () => {
   return (
     <div className="max-w-[80%] mx-auto w-full mt-28">
-      <h1 className="text-center text-4xl font-bold my-10 text-primary">
+      <h1 className="text-center md:text-4xl text-2xl font-bold my-10 text-primary">
         Campaign Management
       </h1>
       <div>
         <div className="flex justify-end my-10">
           <Link
             to="/dashboard/campaign-management/add-campaign"
-            className="btn-primary flex items-center gap-2"
+            className="btn-primary md:text-lg text-sm flex items-center gap-2"
           >
             <PlusOutlined />
             Add Campaign

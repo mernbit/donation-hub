@@ -1,6 +1,8 @@
 import React from "react";
 import HeroImage from "../../../assets/hero.webp";
+import { useNavigate } from "react-router-dom";
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div className="">
       <div className="relative">
@@ -11,7 +13,12 @@ const Hero = () => {
               Some dollars of you, Life for someone
             </p>
             <div className="text-center">
-              <button className="btn-primary">Donate Now</button>
+              <button
+                className="btn-primary"
+                onClick={() => navigate("/dashboard")}
+              >
+                Donate Now
+              </button>
             </div>
           </div>
         </div>

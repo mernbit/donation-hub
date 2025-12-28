@@ -1,0 +1,9 @@
+
+.foot-link {
+  @apply inline-block my-1 border-b-1 border-gray-400 text-lg hover:text-gray-400 transition duration-150;
+}
+
+
+.social-icons{
+    @apply border-2 border-gray-600 !text-gray-600 hover:bg-gray-600 hover:!text-white !text-sm rounded-full px-2 py-1 transition duration-150 cursor-pointer
+}

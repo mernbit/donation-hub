@@ -122,7 +122,7 @@ const Campaign = () => {
   return (
     <div className="mx-auto p-3 md:max-w-[80%] w-full">
       <div className="my-10">
-        <h2 className="text-4xl text-center text-primary font-bold">
+        <h2 className="text-4xl mt-24 text-center text-primary font-bold">
           Update Campaign
         </h2>
       </div>
