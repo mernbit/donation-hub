@@ -38,6 +38,13 @@
   @apply !text-[#6C48C5];
 }
 
+.text-secondary {
+  @apply !text-[#FEC5F6];
+}
+.hover-text-primary {
+  @apply hover:text-[#6C48C5];
+}
+
 .text-section {
   @apply !text-[#FFF7F7];
 }

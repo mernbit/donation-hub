@@ -1,7 +1,6 @@
 import React from "react";
 import {
   BarChartOutlined,
-  DollarCircleFilled,
   HeartFilled,
   MenuOutlined,
   NotificationOutlined,
@@ -15,13 +14,13 @@ const Sider = () => {
   const links = [
     { label: "Dashboard", to: "/dashboard", icons: BarChartOutlined },
     {
-      label: "Campaign Management",
-      to: "/dashboard/campaign-management",
+      label: "Active Campaigns",
+      to: "/dashboard/active-campaigns",
       icons: NotificationOutlined,
     },
     {
-      label: "Analytics & Reports",
-      to: "/dashboard/analytics-reports",
+      label: "Donation History",
+      to: "/dashboard/donation-history",
       icons: SafetyCertificateOutlined,
     },
   ];
@@ -42,7 +41,7 @@ const Sider = () => {
           <MenuOutlined />
         </div>
         <Link title="Home" to="/" className="text-2xl text-center">
-          <HeartFilled className="bg-secondary p-3 rounded-full" /> Donation Hub
+          <HeartFilled className="bg-[#fff] text-primary p-3 rounded-full" /> Donation Hub
         </Link>
       </div>
       <hr className="my-4" />
@@ -50,7 +49,7 @@ const Sider = () => {
         {links.map((link) => (
           <Link key={link.label} to={link.to}>
             <div
-              className={`p-3 hover-bg-secondary hover:text-white ${location.pathname === link.to && "bg-secondary !text-white"
+              className={`p-3 hover:bg-white hover-text-primary ${location.pathname === link.to && "bg-[#fff] text-primary"
                 } rounded transition-150 border-primary my-2 flex items-center `}
             >
               <link.icons />

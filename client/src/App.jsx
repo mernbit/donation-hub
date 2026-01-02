@@ -4,6 +4,7 @@ import Routes from "./pages/Routes";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import socket from "./components/socket";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const App = () => {
   Aos.init({

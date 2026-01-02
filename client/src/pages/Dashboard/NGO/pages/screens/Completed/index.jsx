@@ -1,16 +1,19 @@
-import { useCampaignContext } from "@/contexts/Campaigns/ngo/CampaignContext";
+import { useCampaignContext } from "@/contexts/Campaigns/CampaignContext";
 import { Col, message, Row } from "antd";
 import axios from "axios";
 import clsx from "clsx";
 import React, { useCallback, useEffect, useState } from "react";
 
-const Completed = () => {
+const Completed = ({ activeTab }) => {
   const [campaigns, setCampaign] = useState([]);
   const { handleDelete } = useCampaignContext();
+
+
+
   const getCampaign = useCallback(async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/get-completed`,
+        `${import.meta.env.VITE_API_URL}/api/campaign/get-completed`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -24,8 +27,10 @@ const Completed = () => {
     }
   });
   useEffect(() => {
-    getCampaign();
-  }, []);
+    if (activeTab == "completed") {
+      getCampaign();
+    }
+  }, [activeTab]);
 
   return (
     <div className="">
@@ -56,7 +61,9 @@ const Completed = () => {
                 <button
                   onClick={() => {
                     handleDelete(c._id);
-                    setCampaign(campaigns.filter((campaign) => campaign._id !== c._id))
+                    setCampaign(
+                      campaigns.filter((campaign) => campaign._id !== c._id)
+                    );
                   }}
                   className="btn-danger w-full"
                 >

@@ -8,7 +8,7 @@ const CampaignProvider = ({ children }) => {
   const handleDelete = async (id) => {
     try {
       const res = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/delete/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/campaign/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,

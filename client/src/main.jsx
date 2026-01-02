@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import "@ant-design/v5-patch-for-react-19";
 import AuthProvider from "./contexts/Auth/AuthContext.jsx";
 import TabProvider from "./contexts/Tab/TabContext.jsx";
-import CampaignProvider from "./contexts/Campaigns/ngo/CampaignContext.jsx";
+import CampaignProvider from "./contexts/Campaigns/CampaignContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>

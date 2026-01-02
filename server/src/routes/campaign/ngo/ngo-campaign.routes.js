@@ -32,6 +32,10 @@ ngoCampaignRouter.put(
   verifyToken,
   setCompletedController
 );
-ngoCampaignRouter.get("/get-completed", verifyToken, getCompletedCampaignController)
+ngoCampaignRouter.get(
+  "/get-completed",
+  verifyToken,
+  getCompletedCampaignController
+);
 
 module.exports = ngoCampaignRouter;

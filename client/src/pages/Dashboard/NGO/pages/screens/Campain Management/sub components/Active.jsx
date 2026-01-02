@@ -3,7 +3,7 @@ import axios from "axios";
 import { Col, message, Row } from "antd";
 import { CloseOutlined, MoreOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useCampaignContext } from "../../../../../../../contexts/Campaigns/ngo/CampaignContext";
+import { useCampaignContext } from "../../../../../../../contexts/Campaigns/CampaignContext";
 
 const Active = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Active = () => {
   const getCampaigns = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/active`,
+        `${import.meta.env.VITE_API_URL}/api/campaign/active`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -34,7 +34,7 @@ const Active = () => {
   const handleComplete = (id) => {
     try {
       const res = axios.put(
-        `${import.meta.env.VITE_API_URL}/api/campaign/ngo/set-completed/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/campaign/set-completed/${id}`,
         { status: "complted" },
         {
           headers: {
